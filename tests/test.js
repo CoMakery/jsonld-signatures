@@ -272,6 +272,87 @@ describe('JSON-LD Signatures', function() {
 
   });
 
+  describe('signing and verify secp256k1 w/o security context', function() {
+    // the test document that will be signed
+    var testDocument = {
+      '@context': {
+        schema: 'http://schema.org/',
+        name: 'schema:name',
+        homepage: 'schema:url',
+        image: 'schema:image'
+      },
+      name: 'Manu Sporny',
+      homepage: 'https://manu.sporny.org/',
+      image: 'https://manu.sporny.org/images/manu.png'
+    };
+    var testDocumentSigned = {};
+
+    it('should successfully sign a local document', function(done) {
+      jsigs.sign(testDocument, {
+        algorithm: 'secp256k1',
+        privateKeyWif: testPrivateKeyWif,
+        creator: testPublicKeyWif
+      }, function(err, signedDocument) {
+        assert.ifError(err);
+        assert.notEqual(
+          signedDocument['https://w3id.org/security#signature'], undefined,
+          'signature was not created');
+        assert.equal(
+          signedDocument['https://w3id.org/security#signature']
+            ['http://purl.org/dc/terms/creator']['@id'], testPublicKeyWif,
+          'creator key for signature is wrong');
+        testDocumentSigned = signedDocument;
+        done();
+      });
+    });
+    //
+    // it('should successfully verify a local signed document', function(done) {
+    //   jsigs.verify(testDocumentSigned, {
+    //     publicKey: testPublicKey,
+    //     publicKeyOwner: testPublicKeyOwner
+    //   }, function(err, verified) {
+    //     assert.ifError(err);
+    //     assert.equal(verified, true, 'signature verification failed');
+    //     done();
+    //   });
+    // });
+    //
+    // it('should successfully sign a local document w/promises API', function(done) {
+    //   jsigs.promises.sign(testDocument, {
+    //     algorithm: 'GraphSignature2012',
+    //     privateKeyPem: testPrivateKeyPem,
+    //     creator: testPublicKeyUrl
+    //   }).then(function(signedDocument) {
+    //     assert.notEqual(
+    //       signedDocument['https://w3id.org/security#signature'], undefined,
+    //       'signature was not created');
+    //     assert.equal(
+    //       signedDocument['https://w3id.org/security#signature']
+    //         ['http://purl.org/dc/terms/creator']['@id'], testPublicKeyUrl,
+    //       'creator key for signature is wrong');
+    //     testDocumentSigned = signedDocument;
+    //   }).catch(function(err) {
+    //     assert.ifError(err);
+    //   }).then(function() {
+    //     done();
+    //   });
+    // });
+    //
+    // it('should successfully verify a local signed document w/promises API', function(done) {
+    //   jsigs.promises.verify(testDocumentSigned, {
+    //     publicKey: testPublicKey,
+    //     publicKeyOwner: testPublicKeyOwner
+    //   }).then(function(verified) {
+    //     assert.equal(verified, true, 'signature verification failed');
+    //   }).catch(function(err) {
+    //     assert.ifError(err);
+    //   }).then(function() {
+    //     done();
+    //   });
+    // });
+
+  });
+
   describe('signing and verify GraphSignature2012 w/security context', function() {
 
     // the test document that will be signed
