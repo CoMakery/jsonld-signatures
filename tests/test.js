@@ -286,12 +286,15 @@ describe('JSON-LD Signatures', function() {
       image: 'https://manu.sporny.org/images/manu.png'
     };
     var testDocumentSigned = {};
+    var testPrivateKeyWif = 'L4mEi7eEdTNNFQEWaa7JhUKAbtHdVvByGAqvpJKC53mfiqunjBjw'
+    var testPublicKeyWif = '1LGpGhGK8whX23ZNdxrgtjKrek9rP4xWER'
 
     it('should successfully sign a local document', function(done) {
       jsigs.sign(testDocument, {
-        algorithm: 'secp256k1',
+        algorithm: 'LinkedDataSignature2015',
+        cryptoAlgorithm: 'secp256k1',
         privateKeyWif: testPrivateKeyWif,
-        creator: testPublicKeyWif
+        creator: testPublicKeyUrl
       }, function(err, signedDocument) {
         assert.ifError(err);
         assert.notEqual(

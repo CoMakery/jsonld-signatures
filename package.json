@@ -34,6 +34,8 @@
   "main": "lib/jsonld-signatures.js",
   "dependencies": {
     "async": "1.4.2",
+    "bitcore-lib": "^0.13.19",
+    "bitcore-message": "^1.0.2",
     "commander": "1.3.0",
     "es6-promise": "2.0.1",
     "jsonld": "0.4.2",
