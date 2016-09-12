@@ -32,6 +32,21 @@ if(_nodejs) {
   window.async = async;
   var forge = require('../node_modules/node-forge');
   window.forge = forge;
+
+  // global.Buffer = require('buffer/').Buffer
+
+  var bitcoreLib = require('../bower_components/bitcore-lib/bitcore-lib.js');
+  window['bitcoreLib'] = bitcoreLib;
+
+  var bitcoreMessage = require('../bower_components/bitcore-message/bitcore-message.js');
+  window['bitcore-message'] = bitcoreMessage;
+
+  // var assert2 = require('../node_modules/assert');
+  // window.assert = assert2;
+
+  // var util = require('../node_modules/util');
+  // window.util = util;
+
   require('../node_modules/jsonld');
   var jsonld = jsonldjs;
   require('../' + _jsdir + '/jsonld-signatures');

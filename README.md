@@ -22,7 +22,14 @@ In a browser environment, include the library like this:
 
 You will need to bower install jsonld-signatures and then serve it and
 its dependencies from your server and include each via a script tag, or other
-mechanism, in the order: es6-promise, async, jsonld, forge, jsonld-signatures.
+mechanism, in the order:
+
+es6-promise
+async
+jsonld
+forge
+bitcore-message
+jsonld-signatures.
 
 Here are some examples on using the library:
 

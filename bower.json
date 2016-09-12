@@ -13,10 +13,12 @@
     "lib/jsonld-signatures.js"
   ],
   "dependencies": {
-    "async": "^1.4.2",
-    "es6-promise": "~2.0.1",
-    "jsonld": "~0.4.2",
-    "forge": "~0.6.34"
+    "async": "1.4.2",
+    "bitcore-lib": "^0.13.19",
+    "bitcore-message": "^1.0.2",
+    "es6-promise": "2.0.1",
+    "forge": "0.6.42",
+    "jsonld": "0.4.2"
   },
   "ignore": [
     "node_modules",
