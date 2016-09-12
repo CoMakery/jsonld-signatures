@@ -272,7 +272,7 @@ describe('JSON-LD Signatures', function() {
 
   });
 
-  describe('signing and verify secp256k1 w/o security context', function() {
+  describe('signing and verify BitcoinSignature2016 w/o security context', function() {
     // the test document that will be signed
     var testDocument = {
       '@context': {
@@ -287,12 +287,11 @@ describe('JSON-LD Signatures', function() {
     };
     var testDocumentSigned = {};
     var testPrivateKeyWif = 'L4mEi7eEdTNNFQEWaa7JhUKAbtHdVvByGAqvpJKC53mfiqunjBjw'
-    var testPublicKeyWif = '1LGpGhGK8whX23ZNdxrgtjKrek9rP4xWER'
+    // var testPublicKeyWif = '1LGpGhGK8whX23ZNdxrgtjKrek9rP4xWER'
 
     it('should successfully sign a local document', function(done) {
       jsigs.sign(testDocument, {
-        algorithm: 'LinkedDataSignature2015',
-        cryptoAlgorithm: 'secp256k1',
+        algorithm: 'BitcoinSignature2016',
         privateKeyWif: testPrivateKeyWif,
         creator: testPublicKeyUrl
       }, function(err, signedDocument) {
@@ -302,7 +301,7 @@ describe('JSON-LD Signatures', function() {
           'signature was not created');
         assert.equal(
           signedDocument['https://w3id.org/security#signature']
-            ['http://purl.org/dc/terms/creator']['@id'], testPublicKeyWif,
+            ['http://purl.org/dc/terms/creator']['@id'], testPublicKeyUrl,
           'creator key for signature is wrong');
         testDocumentSigned = signedDocument;
         done();
