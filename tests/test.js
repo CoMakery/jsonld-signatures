@@ -287,7 +287,15 @@ describe('JSON-LD Signatures', function() {
     };
     var testDocumentSigned = {};
     var testPrivateKeyWif = 'L4mEi7eEdTNNFQEWaa7JhUKAbtHdVvByGAqvpJKC53mfiqunjBjw'
-    // var testPublicKeyWif = '1LGpGhGK8whX23ZNdxrgtjKrek9rP4xWER'
+    var testPublicKeyWif = '1LGpGhGK8whX23ZNdxrgtjKrek9rP4xWER'
+
+    var testPublicKey = {
+      '@context': jsigs.SECURITY_CONTEXT_URL,
+      id: testPublicKeyUrl,
+      type: 'CryptographicKey',
+      owner: 'https://example.com/i/alice',
+      publicKeyWif: testPublicKeyWif
+    };
 
     it('should successfully sign a local document', function(done) {
       jsigs.sign(testDocument, {
@@ -307,18 +315,32 @@ describe('JSON-LD Signatures', function() {
         done();
       });
     });
-    //
-    // it('should successfully verify a local signed document', function(done) {
-    //   jsigs.verify(testDocumentSigned, {
-    //     publicKey: testPublicKey,
-    //     publicKeyOwner: testPublicKeyOwner
-    //   }, function(err, verified) {
-    //     assert.ifError(err);
-    //     assert.equal(verified, true, 'signature verification failed');
-    //     done();
-    //   });
-    // });
-    //
+
+    it('should successfully verify a local signed document', function(done) {
+      jsigs.verify(testDocumentSigned, {
+        publicKey: testPublicKey,
+        publicKeyOwner: testPublicKeyOwner
+      }, function(err, verified) {
+        assert.ifError(err);
+        assert.equal(verified, true, 'signature verification failed');
+        done();
+      });
+    });
+
+    it('verify should return false if the document was signed by a different private key', function(done) {
+      var invalidPublicKeyWif = '1BHdCBqQ1GQLfHVEnoXtYf44T97aEHodwe';
+      testPublicKey.publicKeyWif = invalidPublicKeyWif;
+
+      jsigs.verify(testDocumentSigned, {
+        publicKey: testPublicKey,
+        publicKeyOwner: testPublicKeyOwner
+      }, function(err, verified) {
+        assert.ifError(err);
+        assert.equal(verified, false, 'signature verification should have failed');
+        done();
+      });
+    });
+
     // it('should successfully sign a local document w/promises API', function(done) {
     //   jsigs.promises.sign(testDocument, {
     //     algorithm: 'GraphSignature2012',
