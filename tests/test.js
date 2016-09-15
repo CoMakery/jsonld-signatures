@@ -32,6 +32,8 @@ if(_nodejs) {
   window.async = async;
   var forge = require('../node_modules/node-forge');
   window.forge = forge;
+  var bitcoreMessage = require('../node_modules/bitcore-message/dist/bitcore-message.js');
+  window.bitcoreMessage = bitcoreMessage;
   require('../node_modules/jsonld');
   var jsonld = jsonldjs;
   require('../' + _jsdir + '/jsonld-signatures');
