@@ -288,20 +288,27 @@ describe('JSON-LD Signatures', function() {
     var testDocumentSigned = {};
     var testPrivateKeyWif = 'L4mEi7eEdTNNFQEWaa7JhUKAbtHdVvByGAqvpJKC53mfiqunjBjw'
     var testPublicKeyWif = '1LGpGhGK8whX23ZNdxrgtjKrek9rP4xWER'
+    var testPublicKeyFriendly = 'bitcoin-key:' + testPublicKeyWif
 
-    var testPublicKey = {
+    var testPublicKeyBtc = {
       '@context': jsigs.SECURITY_CONTEXT_URL,
-      id: testPublicKeyUrl,
+      id: testPublicKeyFriendly,
       type: 'CryptographicKey',
       owner: 'https://example.com/i/alice',
       publicKeyWif: testPublicKeyWif
+    };
+
+    var testPublicKeyBtcOwner = {
+      '@context': jsigs.SECURITY_CONTEXT_URL,
+      id: 'https://example.com/i/alice',
+      publicKey: [testPublicKeyFriendly]
     };
 
     it('should successfully sign a local document', function(done) {
       jsigs.sign(testDocument, {
         algorithm: 'BitcoinSignature2016',
         privateKeyWif: testPrivateKeyWif,
-        creator: testPublicKeyUrl
+        creator: testPublicKeyFriendly
       }, function(err, signedDocument) {
         assert.ifError(err);
         assert.notEqual(
@@ -309,7 +316,7 @@ describe('JSON-LD Signatures', function() {
           'signature was not created');
         assert.equal(
           signedDocument['https://w3id.org/security#signature']
-            ['http://purl.org/dc/terms/creator']['@id'], testPublicKeyUrl,
+            ['http://purl.org/dc/terms/creator']['@id'], testPublicKeyFriendly,
           'creator key for signature is wrong');
         testDocumentSigned = signedDocument;
         done();
@@ -318,8 +325,8 @@ describe('JSON-LD Signatures', function() {
 
     it('should successfully verify a local signed document', function(done) {
       jsigs.verify(testDocumentSigned, {
-        publicKey: testPublicKey,
-        publicKeyOwner: testPublicKeyOwner
+        publicKey: testPublicKeyBtc,
+        publicKeyOwner: testPublicKeyBtcOwner
       }, function(err, verified) {
         assert.ifError(err);
         assert.equal(verified, true, 'signature verification failed');
@@ -329,11 +336,11 @@ describe('JSON-LD Signatures', function() {
 
     it('verify should return false if the document was signed by a different private key', function(done) {
       var invalidPublicKeyWif = '1BHdCBqQ1GQLfHVEnoXtYf44T97aEHodwe';
-      testPublicKey.publicKeyWif = invalidPublicKeyWif;
+      testPublicKeyBtc.publicKeyWif = invalidPublicKeyWif;
 
       jsigs.verify(testDocumentSigned, {
-        publicKey: testPublicKey,
-        publicKeyOwner: testPublicKeyOwner
+        publicKey: testPublicKeyBtc,
+        publicKeyOwner: testPublicKeyBtcOwner
       }, function(err, verified) {
         assert.ifError(err);
         assert.equal(verified, false, 'signature verification should have failed');
