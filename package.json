@@ -37,7 +37,7 @@
     "bitcore-message": "github:CoMakery/bitcore-message#dist",
     "commander": "~2.9.0",
     "es6-promise": "~3.3.1",
-    "jsonld": "0.4.3",
+    "jsonld": "~0.4.7",
     "node-forge": "~0.6.42",
     "underscore": "~1.8.3"
   },
