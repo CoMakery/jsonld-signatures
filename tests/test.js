@@ -319,13 +319,11 @@ describe('JSON-LD Signatures', function() {
           '@context': jsigs.SECURITY_CONTEXT_URL,
           id: testPublicKeyFriendly,
           type: 'CryptographicKey',
-          owner: 'https://example.com/i/alice',
           publicKeyWif: testPublicKeyWif
         };
 
         testPublicKeyBtcOwner = {
           '@context': jsigs.SECURITY_CONTEXT_URL,
-          id: 'https://example.com/i/alice',
           publicKey: [testPublicKeyFriendly]
         };
 
@@ -596,13 +594,11 @@ describe('JSON-LD Signatures', function() {
           '@context': jsigs.SECURITY_CONTEXT_URL,
           id: testPublicKeyFriendly,
           type: 'CryptographicKey',
-          owner: 'https://example.com/i/alice',
           publicKeyWif: testPublicKeyWif
         };
 
         testPublicKeyBtcOwner = {
           '@context': jsigs.SECURITY_CONTEXT_URL,
-          id: 'https://example.com/i/alice',
           publicKey: [testPublicKeyFriendly]
         };
 
