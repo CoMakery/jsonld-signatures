@@ -14,9 +14,10 @@
 var _nodejs = (typeof process !== 'undefined' &&
   process.versions && process.versions.node);
 
-var _jsdir, jsonld, jsigs, assert, program;
+var _jsdir, jsonld, jsigs, assert, program, sleep;
 
 if(_nodejs) {
+  sleep = require('sleep').sleep;
   _jsdir = process.env.JSDIR || 'lib';
   jsonld = require('../node_modules/jsonld');
   jsigs = require('../' + _jsdir + '/jsonld-signatures')();
@@ -117,6 +118,14 @@ describe('JSON-LD Signatures', function() {
     id: 'https://example.com/i/alice',
     publicKey: [testPublicKey]
   };
+
+  this.timeout(30000);
+
+  beforeEach(function() {
+    if(_nodejs) {
+      sleep(1);
+    }
+  })
 
   context('with NO security context', function() {
     // the test document that will be signed
